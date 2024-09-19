@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculate with Callbacks</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Calculator with Callbacks</h1>
+
+  <script>
+    // Function to perform operations using a callback
+    function calculate(num1, num2) {
+      // Define the operation function which accepts a callback
+      function operation(num1, num2, callback) {
+        return callback(num1, num2);
+      }
+
+      // Addition callback function
+      const addition = (a, b) => a + b;
+
+      // Multiplication callback function
+      const multiplication = (a, b) => a * b;
+
+      // Perform addition
+      const addResult = operation(num1, num2, addition);
+      console.log("Addition Result:", addResult);
+
+      // Perform multiplication
+      const multiplyResult = operation(num1, num2, multiplication);
+      console.log("Multiplication Result:", multiplyResult);
+    }
+
+    // Testing the calculate function
+    calculate(10, 5);  // Example with 10 and 5
+  </script>
+
+</body>
+</html>

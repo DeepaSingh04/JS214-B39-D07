@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    button:disabled {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="timer">00:00</h1>
+  
+  <!-- Control buttons for the timer -->
+  <div class="controls">
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <button id="reset">Reset</button>
+  </div>
+
+  <script>
+    let timerElement = document.getElementById("timer");
+    let startButton = document.getElementById("start");
+    let stopButton = document.getElementById("stop");
+    let resetButton = document.getElementById("reset");
+
+    let timerInterval;
+    let secondsElapsed = 0;
+
+    // Function to update the timer display in MM:SS format
+    function updateTimerDisplay() {
+      let minutes = Math.floor(secondsElapsed / 60);
+      let seconds = secondsElapsed % 60;
+
+      timerElement.textContent = 
+        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    // Start button event
+    startButton.addEventListener("click", function() {
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        updateTimerDisplay();
+      }, 1000);
+      startButton.disabled = true;  // Disable the start button once the timer starts
+    });
+
+    // Stop button event
+    stopButton.addEventListener("click", function() {
+      clearInterval(timerInterval);
+      startButton.disabled = false;  // Enable the start button again when timer stops
+    });
+
+    // Reset button event
+    resetButton.addEventListener("click", function() {
+      clearInterval(timerInterval);
+      secondsElapsed = 0;
+      updateTimerDisplay();
+      startButton.disabled = false;  // Enable the start button after reset
+    });
+
+    // Initialize timer display to 00:00
+    updateTimerDisplay();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Array</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Filter Array</h1>
+
+  <script>
+    const numbers = [10, 25, 30, 45, 60, 75];
+
+    function filterArray(arr, callback) {
+      const filteredArr = [];
+      for (let i = 0; i < arr.length; i++) {
+        if (callback(arr[i])) {
+          filteredArr.push(arr[i]);
+        }
+      }
+      return filteredArr;
+    }
+
+    const callback = (num) => num % 2 === 0;
+
+    const filteredNumbers = filterArray(numbers, callback);
+
+    console.log("Original Array:", numbers);
+    console.log("Filtered Array (Even Numbers):", filteredNumbers);
+  </script>
+
+</body>
+</html>

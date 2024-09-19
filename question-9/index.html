@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Score Check</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      width: 300px;
+      text-align: center;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Score Check System</h1>
+
+  <div class="buttons">
+    <button id="codingCheck">Check Coding Score</button>
+    <button id="hukumuCheck">Check HUKUMU Score</button>
+    <button id="finalCheck">Check Final Unit Movement</button>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    // Function 1: codingScoreCheck
+    function codingScoreCheck(marks, cutoff) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          let average = marks.reduce((acc, mark) => acc + mark, 0) / marks.length;
+          if (average >= cutoff) {
+            resolve(`Average Coding Score: ${average.toFixed(2)}`);
+          } else {
+            reject("Sorry, you haven't cleared the coding round.");
+          }
+        }, 2000);
+      });
+    }
+
+    // Function 2: HUKUMUScoreCheck
+    function HUKUMUScoreCheck(marks, cutoff) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          let average = marks.reduce((acc, mark) => acc + mark, 0) / marks.length;
+          if (average >= cutoff) {
+            resolve(`Average HUKUMU Score: ${average.toFixed(2)}`);
+          } else {
+            reject("Sorry, you haven't cleared the HUKUMU round.");
+          }
+        }, 2000);
+      });
+    }
+
+    // Function 3: unitMovementCheck
+    function unitMovementCheck(averageCodingScore, averageHukumuScore, cutoff) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          let finalAverage = (averageCodingScore + averageHukumuScore) / 2;
+          if (finalAverage >= cutoff) {
+            resolve(`Final Average Score: ${finalAverage.toFixed(2)}`);
+          } else {
+            reject("Sorry, you haven't cleared the final cutoff.");
+          }
+        }, 2000);
+      });
+    }
+
+    // DOM Elements
+    const resultDiv = document.getElementById("result");
+    const codingButton = document.getElementById("codingCheck");
+    const hukumuButton = document.getElementById("hukumuCheck");
+    const finalButton = document.getElementById("finalCheck");
+
+    // Marks arrays and cutoff values
+    const codingMarks = [75, 80, 90, 85, 70]; // Example coding marks
+    const hukumuMarks = [85, 75, 80, 95]; // Example HUKUMU marks
+    const codingCutoff = 80;
+    const hukumuCutoff = 75;
+    const finalCutoff = 85;
+
+    // Check Coding Score button event
+    codingButton.addEventListener("click", () => {
+      resultDiv.textContent = "Checking Coding Score...";
+      codingScoreCheck(codingMarks, codingCutoff)
+        .then(result => resultDiv.textContent = result)
+        .catch(error => resultDiv.textContent = error);
+    });
+
+    // Check HUKUMU Score button event
+    hukumuButton.addEventListener("click", () => {
+      resultDiv.textContent = "Checking HUKUMU Score...";
+      HUKUMUScoreCheck(hukumuMarks, hukumuCutoff)
+        .then(result => resultDiv.textContent = result)
+        .catch(error => resultDiv.textContent = error);
+    });
+
+    // Check Final Unit Movement button event
+    finalButton.addEventListener("click", () => {
+      resultDiv.textContent = "Checking Final Cutoff...";
+      Promise.all([
+        codingScoreCheck(codingMarks, codingCutoff),
+        HUKUMUScoreCheck(hukumuMarks, hukumuCutoff)
+      ])
+        .then(([codingResult, hukumuResult]) => {
+          // Extract the average scores from the results
+          const averageCodingScore = parseFloat(codingResult.split(": ")[1]);
+          const averageHukumuScore = parseFloat(hukumuResult.split(": ")[1]);
+
+          // Check final cutoff
+          return unitMovementCheck(averageCodingScore, averageHukumuScore, finalCutoff);
+        })
+        .then(finalResult => resultDiv.textContent = finalResult)
+        .catch(error => resultDiv.textContent = error);
+    });
+
+  </script>
+
+</body>
+</html>
